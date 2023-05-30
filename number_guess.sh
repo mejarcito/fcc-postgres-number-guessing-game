@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PSQL="psql -X --username=freecodecamp --dbname=guessing_number_game --tuples-only -c"
+PSQL="psql -X --username=freecodecamp --dbname=number_guess --tuples-only -c"
 
 echo -e "\n~~~~~ Guessing Number Game ~~~~~\n"
 
@@ -43,6 +43,18 @@ do
     echo "It's lower than that, guess again:"
     read GUESS
   elif [[ $GUESS -lt $RANDOM_NUMBER ]]
+  then
+    echo "It's higher than that, guess again:"
+    read GUESS
+  fi
+
+  ((TRIES++))
+
+done
+INSERT_GUESS_RESULT=$($PSQL "INSERT INTO games(guesses, user_id) VALUES($TRIES, $USER_ID)")
+
+echo "You guessed it in $TRIES tries. The secret number was $RANDOM_NUMBER. Nice job!"
+
   then
     echo "It's higher than that, guess again:"
     read GUESS
